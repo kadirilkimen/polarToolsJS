@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright (c) 2021 kadir ilkimen
+@licence Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+
+For more details on the licence, see the link below:
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" version="1.0" viewBox="-500 -200 6000 6000">
+  <path fill="#000" stroke="none" d="M3247 622.48c109.4,-354.78 439.85,-612.6 830.55,-612.6 479.98,0 869.08,389.1 869.08,869.08l0 3342.74c0,170.9 -66.66,318.07 -195.09,430.8l-847.93 744.16c-108.81,95.5 -233.34,142.39 -378.09,142.39l-2094.61 0c-144.75,0 -269.3,-46.89 -378.09,-142.39l-847.87 -744.12c-128.44,-112.75 -195.09,-259.88 -195.09,-430.8l0 -3342.78c0,-479.98 389.1,-869.08 869.08,-869.08 390.69,0 721.15,257.82 830.55,612.6 30.13,97.69 116.85,161.71 219.07,161.71l1099.36 0c102.24,0 188.94,-64.04 219.07,-161.71z"/>
+</svg>

@@ -1,0 +1,24 @@
+/*
+
+Copyright (c) 2021 kadir ilkimen
+
+@license GPLv3
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
+For more information on licensing, please see the project repository:
+https://github.com/kadirilkimen/gCodeLibJS
+
+This software is designed to help modify g-codes.
+Incorrectly modified g-codes can be a dangerous thing.
+Be aware of this, be careful and use this software at your own risk.
+
+*/
+.gcode_list{ }
+
+.gcode_line { list-style-type: decimal-leading-zero; }
+.gcode_M, .gcode_G{ color:#0CC; }
+.gcode_comment{ color:#AAA; }
+
+.gcode_X{ color:#F77; }
+.gcode_Y, .gcode_A{ color:#7A7; }
+.gcode_Z{ color:#77A; }
+.gcode_E{ color:#F70; }
