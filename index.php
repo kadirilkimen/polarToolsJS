@@ -65,7 +65,7 @@ Be aware of this, be careful and use this software at your own risk.
             <input type="text" value="0.0" id="toolOffset"/>
             <p>Ideally, the tooltip should be perfectly aligned to the center of the polar axis. This is not always possible.
             If the tooltip has an offset, it will never be in the expected position.The final work will be warped, like looking through a magnifying glass.
-            So, if you have an offset in your tooltip, enter the offset distance here. The pole angle and X axis distance will be realigned with respect to the offset line.</p>
+            So, if you have an offset in your tooltip, enter the offset distance here. The polar angle and X axis distance will be realigned with respect to the offset line.</p>
             <p>We can fix the tooltip offset, but please note that it leaves an inaccessible circle in the center of the polar axis.</p>
           </p>
         </p>
