@@ -107,7 +107,11 @@ Be aware of this, be careful and use this software at your own risk.
           <button id="saveButton" class="disabled">Save</button>
         </p>
       </div>
-
+      <p style="text-align:center">
+        See the source on Github: <a target="_blank" href="https://github.com/kadirilkimen/polarToolsJS">https://github.com/kadirilkimen/polarToolsJS</a>
+      </p>
+      <p style="text-align:center">@license GPLv3</p>
+      <p style="text-align:center">Copyright (c) 2021 kadir ilkimen</p>
     </div>
 
     <script src="js/gcode.lib.js"></script>
