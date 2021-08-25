@@ -23,8 +23,6 @@ window.polarTools = ( function()
 
       let wrapper;
 
-
-
       _this.printHtml = false;
       _this.reorderParameters = false;
 
@@ -87,7 +85,14 @@ window.polarTools = ( function()
         {
           unlockUi();
 
-          lines = fileData.split(/\r?\n/);
+          let unfilteredLines = fileData.split(/\r?\n/);
+          lines = [];
+          for(let i=0; i<unfilteredLines.length;i++)
+            {
+              let trimmedLine = unfilteredLines[i].trim();
+              if(trimmedLine!='') lines.push(trimmedLine);
+            }
+
           lineCount = lines.length;
           nextLine = 0;
 
@@ -155,7 +160,7 @@ window.polarTools = ( function()
           if(filePreview!==null) filePreview.innerHTML = '';
           gCodePolarizer.reset();
           unlockUi();
-          lockSave();
+          _this.lockSave();
         }
 
       _this.lockSave = function() { saveButton.classList.add('disabled'); }
