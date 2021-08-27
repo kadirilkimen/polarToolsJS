@@ -6,7 +6,7 @@ Demo : https://kadirilkimen.com/thepolarbear/polartools/
 Running with Docker
 --------------------
 
-The easiest way to get started.Already has nginx, php, php-fpm, etc. pre-configured::
+The easiest way to get started.Already has nginx, php, php-fpm, etc. pre-configured:
 ```
    docker built -t polartoolsjs:v1 .
    docker run -d \ 
