@@ -7,10 +7,11 @@ Running with Docker
 --------------------
 
 The easiest way to get started.Already has nginx, php, php-fpm, etc. pre-configured::
-
+```
    docker built -t polartoolsjs:v1 .
    docker run -d \ 
               -p 8080:80 \
               --name="polartoolsjs" polartoolsjs:v1
+```
 
 Go to http://localhost:8080 on the Docker host et voilà!
