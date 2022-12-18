@@ -25,8 +25,8 @@ window.gCodePolarizer = (function ()
 
   return new function()
     {
-      let Point = { X:0, Y:0, Z:0, E:0 }
-      let PolarPoint = { R:0, A:0 }
+      let Point = { X:0, Y:0, Z:0, E:0, F:0 }
+      let PolarPoint = { R:0, A:0, F:0 }
 
       let _this = this;
       let currentPoint = oCopy(Point);
@@ -41,7 +41,8 @@ window.gCodePolarizer = (function ()
       _this.interpolateG1;
       _this.g0HalfTolerance;
 
-      let feedRate = 0;
+      _this.maxRadius;
+      _this.feedRateMultiplier;
 
       _this.reset = function()
         {
@@ -56,6 +57,9 @@ window.gCodePolarizer = (function ()
           _this.interpolateG0 = false;
           _this.interpolateG1 = false;
           _this.g0HalfTolerance = false;
+
+          _this.maxRadius = 0;
+          _this.feedRateMultiplier = 1;
         }
 
       /////////////////////////////////////////////////////////////////////////
@@ -141,6 +145,7 @@ window.gCodePolarizer = (function ()
               interpolatedPoint.Y = typeof line.Y === 'undefined' ? interpolatedPoint.Y:line.Y;
               interpolatedPoint.Z = typeof line.Z === 'undefined' ? interpolatedPoint.Z:line.Z;
               interpolatedPoint.E = typeof line.E === 'undefined' ? interpolatedPoint.E:line.E;
+              interpolatedPoint.F = typeof line.F === 'undefined' ? interpolatedPoint.F:line.F;
               return lines; // G command is 92, then nothing to interpolate.
             }
 
@@ -148,8 +153,8 @@ window.gCodePolarizer = (function ()
           linePoint.Y = typeof line.Y === 'undefined' ? linePoint.Y:line.Y;
           linePoint.Z = typeof line.Z === 'undefined' ? linePoint.Z:line.Z;
           linePoint.E = typeof line.E === 'undefined' ? linePoint.E:line.E;
-
-
+          linePoint.F = typeof line.F === 'undefined' ? linePoint.F:line.F;
+          
           if(!isG0 && !isG1 ) interpolate = false;
           else if(isG0 && !_this.interpolateG0 ) interpolate = false;
           else if(isG1 && !_this.interpolateG1 ) interpolate = false;
@@ -164,7 +169,7 @@ window.gCodePolarizer = (function ()
               let t = _this.tolerance;
               if( isG0 && _this.g0HalfTolerance ) t = _this.tolerance * 2.0;
               let segments = Math.ceil( xyDistance /t );
-              let segmentDistance = xyDistance/segments;
+              // let segmentDistance = xyDistance/segments;
 
               // find segment distance for each axis
               let xLength = axisDistance( interpolatedPoint, linePoint, 'X') / segments;
@@ -178,7 +183,6 @@ window.gCodePolarizer = (function ()
                 {
                   // in each loop, create a new line segment.
                   let segmentLine = oCopy(line);
-                  if(i>1) delete segmentLine.F;
                   // assign this segment's point to next interpolated segment point
                   segmentLine.X = interpolatedPoint.X + (xLength*i);
                   segmentLine.Y = interpolatedPoint.Y + (yLength*i);
@@ -190,10 +194,9 @@ window.gCodePolarizer = (function ()
                     {
                       segmentLine.E = interpolatedPoint.E+(eLength*i);
                       //if(prG==92) console.info('G'+line.G+' E'+segmentLine.E);
-
                     }
                   
-                  if(segmentLine.E==4157.59803) console.warn(segmentLine);
+                  // if(segmentLine.E==4157.59803) console.warn(segmentLine);
                   // push the line segment into lines
                   lines.push(segmentLine);
                 }
@@ -207,6 +210,7 @@ window.gCodePolarizer = (function ()
           interpolatedPoint.Y = linePoint.Y;
           interpolatedPoint.Z = linePoint.Z;
           interpolatedPoint.E = linePoint.E;
+          interpolatedPoint.F = linePoint.F;
 
           // if there is any interpolated lines, return it, otherwise, return original line.
           // interpolate function always return array of line objects.
@@ -216,12 +220,12 @@ window.gCodePolarizer = (function ()
         }
 
 
-      _this.polarize = function(line) // parsed g-code line object
+      _this.polarize = function(line ) // parsed g-code line object
         {
           // if it is not a motion command, then nothing to polarize
           if(!line.hasOwnProperty('G')) return false;
 
-          let nextPoint = oCopy( currentPoint);
+          // let nextPoint = oCopy( currentPoint);
           let polarLine = oCopy( line );
 
           // we assign axis information to current point if available. otherwise we keep old one.
@@ -231,13 +235,14 @@ window.gCodePolarizer = (function ()
           currentPoint.Y = typeof line.Y === 'undefined' ? currentPoint.Y:line.Y;
           currentPoint.Z = typeof line.Z === 'undefined' ? currentPoint.Z:line.Z;
           currentPoint.E = typeof line.E === 'undefined' ? currentPoint.E:line.E;
+          currentPoint.F = typeof line.F === 'undefined' ? currentPoint.F:line.F;
 
           // if it is G92, then we simply return false. Because nothing to polarize.
           if(line.G.includes(92)) return line;
 
-          let nextPolarPoint = oCopy(PolarPoint);
+          // let nextPolarPoint = oCopy(PolarPoint);
 
-          feedRate = typeof line.F==='undefined' ? feedRate:line.F;
+         // feedRate = typeof line.F==='undefined' ? feedRate:line.F;
 
           // we polarize X and Y axis. If any of them available in the new line, we should polarize it.
           // if both axis is not available in the line, then nothing to polarize.

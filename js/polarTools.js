@@ -36,7 +36,12 @@ window.polarTools = ( function()
       let interpolateG1;
       let g0HalfTolerance;
       let keepComments;
+      
+      let maximumR;
+      let feedRateMultiplier;
+
       let toolOffset;
+
 
       let decimalPrecision;
 
@@ -150,7 +155,6 @@ window.polarTools = ( function()
 
       let resetTool = function()
         {
-
           fileData = '';
           lines = [];
           lineCount = 0;
@@ -180,6 +184,9 @@ window.polarTools = ( function()
           gCodePolarizer.interpolateG1 = interpolateG1.checked;
           gCodePolarizer.g0HalfTolerance = g0HalfTolerance.checked;
 
+          gCodePolarizer.maxRadius = Number(maximumR.value);
+          gCodePolarizer.feedRateMultiplier = Number(feedRateMultiplier.value)-1.0;
+
           gCodePolarizer.toolOffset = Number(toolOffset.value);
 
           GCode.reAssignAxes = {
@@ -194,8 +201,9 @@ window.polarTools = ( function()
           let precision = parseInt(decimalPrecision.value);
           if(isNaN(precision)) alert('Decimal precision must be an integer and between 0-6');
           else GCode.decimalPrecision = parseInt(decimalPrecision.value);
-
         }
+
+      _this.onPolarize = function(){};
 
       let polarizeGcode = function()
         {
@@ -205,6 +213,7 @@ window.polarTools = ( function()
 
           setTimeout(function()
             {
+
               _this.onPolarize();
               nextLine = 0;
               unlockUi();
@@ -212,7 +221,7 @@ window.polarTools = ( function()
             });
         }
 
-      _this.onPolarize = function(){};
+
 
 
       let onSave = function(){};
@@ -232,6 +241,10 @@ window.polarTools = ( function()
           interpolateG1 = document.querySelector('#interpolateG1');
           g0HalfTolerance = document.querySelector('#g0HalfTolerance');
           keepComments = document.querySelector('#keepComments');
+
+          maximumR = document.querySelector('#maximum-radius');
+          feedRateMultiplier = document.querySelector('#feedrate-multiplier');
+
           toolOffset = document.querySelector('#toolOffset');
           decimalPrecision = document.querySelector('#decimalPrecision');
 

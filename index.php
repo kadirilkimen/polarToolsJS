@@ -57,7 +57,28 @@ Be aware of this, be careful and use this software at your own risk.
           Due to the rotary axis, polar machines follow an arc path.
           To fix this we need to split straight paths into smaller paths. "tolerance" means maximum path length. If a straight path is longer than this, it is divided into smaller paths until it is smaller than the "tolerance".
 
-
+        <p>
+          -------------------------------------------------
+          <br>
+          <p>Because we generate g-codes based on cartesian machines, any given feedrate is the outer diameter feedrate for a polar axis.</p>
+          <p>Because of the polar movement, achieved distance greatly reduces towards the center and movements near the center becomes too slow</p>
+          <p>To compensate this, we increase feedrate proportionally towards the center</p>
+          <br>
+          <br>
+          <p class="basic-options">
+            <label for="maximum-radius">Max. Workatable Radius</label>
+            <input type="text" value="82.0" id="maximum-radius"/>
+            <p>Enter the maximum radius of your worktable in g-code's units. It is mostly in mm. But if you use inch based g-codes, enter the inch equivalent of the radius.
+            <br>It's radius, not diameter!
+            </p>
+            <br>
+            <br>
+            <label for="feedrate-multiplier">Max. Feedrate Multiplier</label>
+            <input type="text" value="2.0" id="feedrate-multiplier"/>
+            <p>This multiplier helps us to define maximum feedrate at the center point and proportionally calculates effective feedrate based on a given radius</p>
+          </p>
+        </p>
+        <br>
         <p>
           -------------------------------------------------
           <p class="basic-options">
@@ -119,13 +140,18 @@ Be aware of this, be careful and use this software at your own risk.
     <script src="js/polarTools.js"></script>
 
     <script>
-
+    'use strict';
       // callback function for polarize button
       polarTools.onPolarize = function()
         {
           let gcodes = [];
 
           let line = false;
+          let feedRate = 0;
+          let calculatedFeedRate = 0;
+          let lastRadius = 10000000;
+
+
           while( line = polarTools.nextLine() )
             {
               if(!line) break;
@@ -139,7 +165,33 @@ Be aware of this, be careful and use this software at your own risk.
                   let interpolatedLine = gCodePolarizer.interpolate(parsedLine);
                   for( const line of interpolatedLine )
                     {
-                      gcodes.push( gCodePolarizer.polarize(line) );
+                      let polarizedLine = gCodePolarizer.polarize(line);
+
+                      if(polarizedLine.hasOwnProperty('F')) feedRate = polarizedLine.F;
+
+                      let radiusFeedRate = calculatedFeedRate;
+                      
+                      if(polarizedLine.hasOwnProperty('X'))
+                        {
+                          delete polarizedLine.F;
+                          let rDelta = Math.abs(lastRadius-polarizedLine.X);
+                          if(rDelta>=1)
+                            {
+                              lastRadius = polarizedLine.X;
+                              let rRatio = 1-(polarizedLine.X/gCodePolarizer.maxRadius);
+                              let zeroFeedRate = feedRate*gCodePolarizer.feedRateMultiplier;
+                              radiusFeedRate = (zeroFeedRate*rRatio)+feedRate;
+                            }
+                        }
+
+
+                      if(radiusFeedRate!=calculatedFeedRate)
+                        {
+                          calculatedFeedRate = radiusFeedRate;
+                          polarizedLine.F = radiusFeedRate;
+                        }
+                      //console.warn(polarizedLine);
+                      gcodes.push( polarizedLine );
                     }
                 }
             }
