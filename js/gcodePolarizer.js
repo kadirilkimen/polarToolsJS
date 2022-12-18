@@ -64,8 +64,8 @@ window.gCodePolarizer = (function ()
 
       let lineLength = function(p1, p2, a1, a2)
         {
-          a1 = a1 || 'X';
-          a2 = a2 || 'Y';
+          a1 = typeof a1==='undefined' ? 'X':a1;
+          a2 = typeof a2==='undefined' ? 'Y':a2;
 
           let powX = Math.pow( p1[a1]-p2[a1], 2.0 );
           let powY = Math.pow( p1[a2]-p2[a2], 2.0 );
@@ -119,6 +119,7 @@ window.gCodePolarizer = (function ()
 
       /////////////////////////////////////////////////////////////////////////
       // interpolation of long straight lines.
+      let prG = -1;
       _this.interpolate = function(line) // parsed Gcode line object
         {
           let lines = [line];
@@ -132,20 +133,22 @@ window.gCodePolarizer = (function ()
           let isG92 = line.G.includes(92);
 
 
+          prG = line.G;
           if( isG92 )
             {
               // if G92 command is given, then we should set interpolatedPoint values
-              interpolatedPoint.X = line.X || interpolatedPoint.X;
-              interpolatedPoint.Y = line.Y || interpolatedPoint.Y;
-              interpolatedPoint.Z = line.Z || interpolatedPoint.Z;
-              interpolatedPoint.E = line.E || interpolatedPoint.E;
+              interpolatedPoint.X = typeof line.X === 'undefined' ? interpolatedPoint.X:line.X;
+              interpolatedPoint.Y = typeof line.Y === 'undefined' ? interpolatedPoint.Y:line.Y;
+              interpolatedPoint.Z = typeof line.Z === 'undefined' ? interpolatedPoint.Z:line.Z;
+              interpolatedPoint.E = typeof line.E === 'undefined' ? interpolatedPoint.E:line.E;
               return lines; // G command is 92, then nothing to interpolate.
             }
 
-          linePoint.X = line.X || linePoint.X;
-          linePoint.Y = line.Y || linePoint.Y;
-          linePoint.Z = line.Z || linePoint.Z;
-          linePoint.E = line.E || linePoint.E;
+          linePoint.X = typeof line.X === 'undefined' ? linePoint.X:line.X;
+          linePoint.Y = typeof line.Y === 'undefined' ? linePoint.Y:line.Y;
+          linePoint.Z = typeof line.Z === 'undefined' ? linePoint.Z:line.Z;
+          linePoint.E = typeof line.E === 'undefined' ? linePoint.E:line.E;
+
 
           if(!isG0 && !isG1 ) interpolate = false;
           else if(isG0 && !_this.interpolateG0 ) interpolate = false;
@@ -154,7 +157,6 @@ window.gCodePolarizer = (function ()
 
           let xyDistance = lineLength(interpolatedPoint, linePoint, 'X', 'Y');
           if( xyDistance<= _this.tolerance ) interpolate = false;
-
 
           if(interpolate)
             {
@@ -184,15 +186,21 @@ window.gCodePolarizer = (function ()
                   // if Z and E axes aren't exist in the line definition, ignore them.
                   // they don't need to be interpolated if they are not changed.
                   if( line.hasOwnProperty('Z') ) segmentLine.Z = interpolatedPoint.Z+(zLength*i);
-                  if( line.hasOwnProperty('E') ) segmentLine.E = interpolatedPoint.E+(eLength*i);
+                  if( line.hasOwnProperty('E') )
+                    {
+                      segmentLine.E = interpolatedPoint.E+(eLength*i);
+                      //if(prG==92) console.info('G'+line.G+' E'+segmentLine.E);
 
+                    }
+                  
+                  if(segmentLine.E==4157.59803) console.warn(segmentLine);
                   // push the line segment into lines
                   lines.push(segmentLine);
                 }
 
 
             }
-
+          
           // assign final linePoint to interpolated point record.
           // so in the next line interpolation, we will know where the last interpolated position is.
           interpolatedPoint.X = linePoint.X;
@@ -219,17 +227,17 @@ window.gCodePolarizer = (function ()
           // we assign axis information to current point if available. otherwise we keep old one.
           // we will use this information to calculate polar coordinates.
           // also we have to remember the latest point for next ime.
-          currentPoint.X = line.X || currentPoint.X;
-          currentPoint.Y = line.Y || currentPoint.Y;
-          currentPoint.Z = line.Z || currentPoint.Z;
-          currentPoint.E = line.E || currentPoint.E;
+          currentPoint.X = typeof line.X === 'undefined' ? currentPoint.X:line.X;
+          currentPoint.Y = typeof line.Y === 'undefined' ? currentPoint.Y:line.Y;
+          currentPoint.Z = typeof line.Z === 'undefined' ? currentPoint.Z:line.Z;
+          currentPoint.E = typeof line.E === 'undefined' ? currentPoint.E:line.E;
 
           // if it is G92, then we simply return false. Because nothing to polarize.
           if(line.G.includes(92)) return line;
 
           let nextPolarPoint = oCopy(PolarPoint);
 
-          feedRate = line.F || feedRate;
+          feedRate = typeof line.F==='undefined' ? feedRate:line.F;
 
           // we polarize X and Y axis. If any of them available in the new line, we should polarize it.
           // if both axis is not available in the line, then nothing to polarize.
