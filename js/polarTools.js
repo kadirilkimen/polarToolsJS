@@ -49,6 +49,11 @@ window.polarTools = ( function()
       let reassignY;
       let reassignZ;
       let reassignE;
+      
+      let reassignA;
+      let reassignB;
+      let reassignC;
+      
 
       let reOrder;
 
@@ -193,7 +198,10 @@ window.polarTools = ( function()
               X:reassignX.value,
               Y:reassignY.value,
               Z:reassignZ.value,
-              E:reassignE.value
+              E:reassignE.value,
+              A:reassignA.value,
+              B:reassignB.value,
+              C:reassignC.value
             }
 
           GCode.keepComments = keepComments.checked;
@@ -252,6 +260,11 @@ window.polarTools = ( function()
           reassignY = document.querySelector('#reassignY');
           reassignZ = document.querySelector('#reassignZ');
           reassignE = document.querySelector('#reassignE');
+          
+          reassignA = document.querySelector('#reassignA');
+          reassignB = document.querySelector('#reassignB');
+          reassignC = document.querySelector('#reassignC');
+          
 
           reOrder = document.querySelector('#reOrder');
 

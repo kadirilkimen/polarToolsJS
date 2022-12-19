@@ -29,10 +29,10 @@ window.GCode = (function ()
 
 			// paramter ordering list while converting a line into a string or html
 			// unlisted parameters will be added to the end of line
-			let parameterOrderingList = [ 'M', 'G', 'A', 'X', 'Y', 'Z', 'E', 'F', 'S' ];
+			let parameterOrderingList = [ 'M', 'G', 'X', 'Y', 'Z', 'E', 'A', 'B', 'C', 'F', 'S' ];
       _this.reorder = true;
 
-      _this.reAssignAxes = { X:'X', Y:'Y', Z:'Z', E:'E' }
+      _this.reAssignAxes = { X:'X', Y:'Y', Z:'Z', E:'E', A:'A', B:'B', C:'C' }
 
 
       _this.reset = function()

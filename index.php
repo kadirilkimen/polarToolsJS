@@ -94,18 +94,86 @@ Be aware of this, be careful and use this software at your own risk.
         <p>
           --------------------------------------------------
           <p>Reassign Axis labels</p>
+
+          <p> <strong>Important note:</strong> This post processor doesn't perform any calculations on axes A, B and C in the original G-code file. Therefore these values are transferred to the final g-code file directly.</p>
           <p class="axis-reassignment-options">
             <label for="reassignX">X</label>
-            <select id="reassignX"><option value="X" selected>X</option><option value="Y">Y</option><option value="Z">Z</option><option value="E">E</option></select>
+            <select id="reassignX">
+              <option value="X" selected>X</option>
+              <option value="Y">Y</option>
+              <option value="Z">Z</option>
+              <option value="E">E</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
 
             <label for="reassignY">Y</label>
-            <select id="reassignY"><option value="A">A</option><option value="X">X</option><option value="Y" selected>Y</option><option value="Z">Z</option><option value="E">E</option></select>
+            <select id="reassignY">
+              <option value="X">X</option>
+              <option value="Y" selected>Y</option>
+              <option value="Z">Z</option>
+              <option value="E">E</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
 
             <label for="reassignZ">Z</label>
-            <select id="reassignZ"><option value="X">X</option><option value="Y">Y</option><option value="Z" selected>Z</option><option value="E">E</option></select>
+            <select id="reassignZ">
+              <option value="X">X</option>
+              <option value="Y">Y</option>
+              <option value="Z" selected>Z</option>
+              <option value="E">E</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
 
             <label for="reassignE">E</label>
-            <select id="reassignE"><option value="X">X</option><option value="Y">Y</option><option value="Z">Z</option><option value="E" selected>E</option></select>
+            <select id="reassignE">
+              <option value="X">X</option>
+              <option value="Y">Y</option>
+              <option value="Z">Z</option>
+              <option value="E" selected>E</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
+
+            <label for="reassignA">A</label>
+            <select id="reassignA">
+              <option value="X">X</option>
+              <option value="Y">Y</option>
+              <option value="Z">Z</option>
+              <option value="E">E</option>
+              <option value="A" selected>A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
+
+            <label for="reassignB">B</label>
+            <select id="reassignB">
+              <option value="X">X</option>
+              <option value="Y">Y</option>
+              <option value="Z">Z</option>
+              <option value="E">E</option>
+              <option value="A">A</option>
+              <option value="B" selected>B</option>
+              <option value="C">C</option>
+            </select>
+
+            <label for="reassignC">C</label>
+            <select id="reassignC">
+              <option value="X">X</option>
+              <option value="Y">Y</option>
+              <option value="Z">Z</option>
+              <option value="E">E</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C" selected>C</option>
+            </select>
+            
           </p>
         </p>
 
