@@ -53,10 +53,14 @@ Be aware of this, be careful and use this software at your own risk.
         </p>
 
         <p>
-          Cam softwares expect the machine to move on a straight path from the current point to the given point.
+          Most cam software and slicers expect the machine to move on a straight path from the current point to the given point.
           Due to the rotary axis, polar machines follow an arc path.
-          To fix this we need to split straight paths into smaller paths. "tolerance" means maximum path length. If a straight path is longer than this, it is divided into smaller paths until it is smaller than the "tolerance".
+          To fix this we need to split straight paths into smaller paths. The "tolerance" means the maximum path length. If a straight path is longer than this, it is divided into smaller paths until it is smaller than the "tolerance".
 
+          G0 means travel. Since travel precision is not as important as G1 (which is work move) You can check the "1/2 resolution for G0". This creates less g-code for the controller.
+          Also you can consider to do not interpolate G0. In this case, machine will follow an arc path while traveling. It is more efficient for a polar machine.
+          However, the cam software (or slicer) may create a travel movement based on "not hitting a part" or "avoid printed parts" etc.
+          <strong style="color:red">Always keep this in mind:</strong> If you don't interpolate G0, It will follow a different path than what cam/slicer designed.
         <p>
           -------------------------------------------------
           <br>
